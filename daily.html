@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Wisdom | padua.net</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Bob</a>
+    <a href="daily.html">Daily Wisdom</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+    <div class="chapter-header">
+        <h1 id="display-chapter">PROVERBS</h1>
+        <p class="hero-text">Millennial Edition: Timeless Wisdom for Today</p>
+    </div>
+
+    <div class="card" id="wisdom-list">
+        <p style="text-align:center; font-style:italic;">Opening the Wisdom Vault...</p>
+    </div>
+</div>
+
+<script>
+    async function loadDailyChapter() {
+        try {
+            const response = await fetch('keywordlist.csv');
+            const data = await response.text();
+            const rows = data.split('\n').filter(row => row.trim() !== "").slice(1);
+            
+            // Get current day of the month (1-31)
+            const todayChapter = new Date().getDate();
+            document.getElementById('display-chapter').innerText = "PROVERBS " + todayChapter;
+
+            const listContainer = document.getElementById('wisdom-list');
+            listContainer.innerHTML = ""; // Clear loader
+
+            let foundLines = false;
+
+            rows.forEach(row => {
+                // Parse CSV columns: ID[0], Chapter[1], Line[2], Keyword[3], Description[4]
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                // Extract chapter number from "Chapter X" string
+                const chapterNum = parseInt(cols[1].replace(/[^0-9]/g, ''));
+
+                if (chapterNum === todayChapter) {
+                    foundLines = true;
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'verse-row';
+                    lineDiv.innerHTML = `
+                        <div class="verse-num">${cols[2]}</div>
+                        <div class="verse-content">
+                            <span class="keyword-tag">${cols[3]}</span>
+                            <div>${cols[4].replace(/"/g, '')}</div>
+                        </div>
+                    `;
+                    listContainer.appendChild(lineDiv);
+                }
+            });
+
+            if (!foundLines) {
+                listContainer.innerHTML = "<p style='text-align:center;'>Wisdom for this chapter is being prepared. Please check back shortly.</p>";
+            }
+
+        } catch (error) {
+            console.error("Error loading CSV:", error);
+            document.getElementById('wisdom-list').innerHTML = "<p>Error connecting to Wisdom Library. Ensure keywordlist.csv is uploaded.</p>";
+        }
+    }
+
+    window.onload = loadDailyChapter;
+</script>
+
+<footer style="padding: 40px; text-align: center; border-top: 1px solid #eee;">
+    <p style="font-size: 0.8em; color: #888;">©2026 Bobby Padua | padua.net</p>
+</footer>
+
+</body>
+</html>

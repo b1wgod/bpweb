@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Prayer | Your Spirtual Sword</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<script src="nav.js"></script>
+<header>
+    <h1>Infinite  Prayer</h1>
+    <p class="hero-text">"Yahweh is our refuge and our fortress."</p>
+</header>
+
+<div class="container">
+    <div class="card" style="text-align: center;">
+        <h2>Generate Today's Word</h2>
+        <button class="cta-button" onclick="generatePrayer('Brothers & Sisters')">Brothers & Sisters</button>
+        <button class="cta-button" onclick="generatePrayer('Family & Friends')">Family & Friends</button>
+        <div id="loader" style="display:none; color:#c5a059; margin-top:10px;">Connecting to the Heavens...</div>
+    </div>
+
+    <div class="card" id="prayerBox" style="display:none;">
+        <h2 id="pHeader" style="border-bottom: none; text-align: left;"></h2>
+        <p id="pWorship"></p>
+        <p id="pPetition"></p>
+        <div style="border-top: 1px solid rgba(197, 160, 89, 0.3); margin-top: 25px; padding-top: 15px;">
+            <h3 style="text-align: left; font-size: 1.1em; color: #c5a059;">Reflection:</h3>
+            <p id="pScripture" style="font-style: italic; color: #555;"></p>
+            <p id="pEncouragement"></p>
+        </div>
+        <p style="margin-top: 30px;">May Yahweh, Yeshua and Spirit 🙏🏼😇💕🙏🏼</p>
+        <p>With ❤️ Bobby</p>
+        <center><button class="copy-btn" onclick="copyPrayer()">Copy to Clipboard</button></center>
+    </div>
+</div>
+
+<script>
+    const worshipParts = [
+        "Today, we lift our hearts in worship to Yahweh, the Creator of all things.",
+        "Let us come together to thank Yahweh for His endless mercy and grace.",
+        "We enter His gates with thanksgiving, honoring Yahweh as our King.",
+        "Yahweh has given us the breath of life; let us praise Him with every breath.",
+        "We worship Yahweh today, the Most High who watches over our souls.",
+        "Let our spirits rejoice in Yahweh, for He is good and His love is eternal.",
+        "We bow before Yahweh, acknowledging His hand in our daily protection.",
+        "In the quiet of this Sunday, we thank Yahweh for His sovereign peace.",
+        "Yahweh is our shield; we lift our voices in adoration to His holy name.",
+        "Let us celebrate the goodness of Yahweh, our refuge and our strength.",
+        "We worship the Father, Yahweh, who sustains us through every trial.",
+        "Praise be to Yahweh, who illuminates our path with His divine light.",
+        "We honor Yahweh today for the breakthroughs He is manifesting in our lives.",
+        "Let every soul bless Yahweh, for He has counted every tear we have shed.",
+        "Yahweh, we thank You for being our anchor in the floods of adversity.",
+        "We adore Yahweh, the architect of our destiny and the source of our hope.",
+        "Let us sing praises to Yahweh, who is tearing down every wall of limitation.",
+        "We worship Yahweh for the peace that settles over our anxious thoughts.",
+        "Gratitude overflows to Yahweh for the strength He pours into weary bones.",
+        "Yahweh is our lighthouse; we worship Him for guiding us home.",
+        "We honor Yahweh for the perfect timing of His blessings and mercies.",
+        "Let us worship Yahweh, who has forgotten none of His children.",
+        "We thank Yahweh for the supernatural provision that sustains our families.",
+        "Yahweh be praised for the spirit of unity He brings to our hearts today.",
+        "We worship Yahweh, the healer of wounds and the restorer of souls.",
+        "Praise Yahweh for the spiritual muscles developed in our secret battles.",
+        "We honor Yahweh for the seasons of preparation that refine our character.",
+        "Let us worship Yahweh, who turns our messes into powerful messages.",
+        "We thank Yahweh for the generational blessings flowing through us now.",
+        "Yahweh is our sanctuary; we worship Him for being our safe place.",
+        "Praise Yahweh for the doors He opens that no man can ever shut.",
+        "We worship Yahweh for the incredible chapters He is writing in our lives.",
+        "Let us adore Yahweh, who restores everything the enemy has stolen.",
+        "We honor Yahweh for the unexplainable peace that guards our hearts.",
+        "Yahweh, we worship You for being the Alpha and the Omega of our journey.",
+        "Praise Yahweh for the light that breaks through the thickest darkness.",
+        "We worship Yahweh today for the harvest that is about to burst forth.",
+        "Let us thank Yahweh for the divine appointments He orchestrates daily.",
+        "We adore Yahweh for the wisdom He grants us to steward His blessings.",
+        "Yahweh be praised for the love that is stronger than any obstacle."
+    ];
+
+    const petitionParts = [
+        "May Yeshua teach us gentleness and Ruach HaKodesh fill our homes with peace.",
+        "May the light of Yeshua guide our steps and Ruach HaKodesh renew our joy.",
+        "We pray that Yeshua heals our wounds and Ruach HaKodesh refreshes our spirits.",
+        "May Ruach HaKodesh lead us into all truth while Yeshua intercedes for us.",
+        "Let the love of Yeshua be our guide and Ruach HaKodesh be our strength.",
+        "May Yeshua grant us forgiveness and Ruach HaKodesh empower our kindness.",
+        "We ask Yeshua to guard our families and Ruach HaKodesh to grant us wisdom.",
+        "May Ruach HaKodesh settle our minds and Yeshua restore our broken hopes.",
+        "Let the grace of Yeshua and the power of Ruach HaKodesh be upon us all.",
+        "May Yeshua provide for our needs and Ruach HaKodesh protect our destiny.",
+        "We pray that Yeshua strengthens our faith and Ruach HaKodesh purifies our hearts.",
+        "May Ruach HaKodesh inspire our worship and Yeshua receive our adoration.",
+        "Let the peace of Yeshua reign and the wisdom of Ruach HaKodesh prevail.",
+        "May Yeshua lift our burdens and Ruach HaKodesh comfort our mourning.",
+        "We ask Yeshua to fight our battles and Ruach HaKodesh to sustain our spirit.",
+        "May Ruach HaKodesh unlock our potential and Yeshua favor our endeavors.",
+        "Let the humility of Yeshua be in us and the fire of Ruach HaKodesh lead us.",
+        "May Yeshua open the right doors and Ruach HaKodesh close the wrong ones.",
+        "We pray that Yeshua restores our joy and Ruach HaKodesh gives us rest.",
+        "May Ruach HaKodesh reveal the Father's heart and Yeshua secure our victory.",
+        "Let the compassion of Yeshua and the counsel of Ruach HaKodesh guide us.",
+        "May Yeshua remove our pride and Ruach HaKodesh fill us with boldness.",
+        "We ask Yeshua to heal our land and Ruach HaKodesh to bring revival.",
+        "May Ruach HaKodesh keep us tender and Yeshua keep us strong in faith.",
+        "Let the presence of Yeshua and the peace of Ruach HaKodesh surround us.",
+        "May Yeshua direct our words and Ruach HaKodesh inspire our actions.",
+        "We pray that Yeshua binds every shadow and Ruach HaKodesh looses every blessing.",
+        "May Ruach HaKodesh breathe life into our dreams and Yeshua fulfill them.",
+        "Let the beauty of Yeshua be seen in us through the work of Ruach HaKodesh.",
+        "May Yeshua be our anchor and Ruach HaKodesh be our wind toward destiny.",
+        "We ask Yeshua to protect our children and Ruach HaKodesh to teach them truth.",
+        "May Ruach HaKodesh reveal our purpose and Yeshua confirm our calling.",
+        "Let the joy of Yeshua be our strength as Ruach HaKodesh empowers us.",
+        "May Yeshua be glorified in our success and Ruach HaKodesh be our humble guide.",
+        "We pray that Yeshua mends our relationships and Ruach HaKodesh keeps them pure.",
+        "May Ruach HaKodesh give us clarity and Yeshua give us courage to move.",
+        "Let the sacrifice of Yeshua and the power of Ruach HaKodesh transform us.",
+        "May Yeshua take all the glory and Ruach HaKodesh take all our fears.",
+        "We ask Yeshua to sustain our health and Ruach HaKodesh to sustain our peace.",
+        "May Ruach HaKodesh connect us with destiny and Yeshua establish our work."
+    ];
+
+    const wisdomLibrary = [
+        { id: 1, keyword: "DESTINY", text: "This is not a coincidence; something is happening in the spiritual realm concerning your destiny." },
+        { id: 2, keyword: "OBSTACLES", text: "I am tearing down every single obstacle standing in opposition to your blessing." },
+        { id: 3, keyword: "BREAKTHROUGH", text: "I am destroying every chain wrapped around your dreams and every barrier to your breakthrough." },
+        { id: 4, keyword: "TRANSFORMATION", text: "Every setback was actually a setup; the pit was preparing you for the palace." },
+        { id: 5, keyword: "PREPARATION", text: "This delay is not a denial; it is the final stage of preparation for your best chapter." },
+        { id: 6, keyword: "RESTORE", text: "I am restoring relationships that seemed too broken to repair and healing deep wounds." },
+        { id: 7, keyword: "TIMING", text: "The delay is not a sign of absence, but evidence of my perfect timing." },
+        { id: 8, keyword: "MATURITY", text: "I am developing the spiritual maturity you need to steward the blessings coming your way." },
+        { id: 9, keyword: "PURPOSE", text: "Every rejection has been redirecting you toward opportunities aligned with my purpose." },
+        { id: 10, keyword: "VICTORY", text: "Your greatest victories are not in your past; they are in your future." },
+        { id: 11, keyword: "RESURRECTION", text: "Your dead dream is about to be resurrected with more power than before." },
+        { id: 12, keyword: "INTEGRITY", text: "Because of your integrity in secret, I am about to reward you in the public place." },
+        { id: 13, keyword: "ABUNDANCE", text: "I am blessing you so abundantly that it will be undeniable to everyone around you." },
+        { id: 14, keyword: "AUTHORITY", text: "You are fighting from victory with the authority I have given you as my child." },
+        { id: 15, keyword: "LEGACY", text: "This breakthrough is a fulfillment of promises made to generations before you." },
+        { id: 16, keyword: "INTEREST", text: "I will restore everything stolen plus interest for the time you were without it." },
+        { id: 17, keyword: "DECLARATION", text: "Stop rehearsing problems and start declaring my promises; move in faith, not fear." },
+        { id: 18, keyword: "REFINING", text: "Adversity was a refining process to bring out the precious diamond in you." },
+        { id: 19, keyword: "MANIFEST", text: "The miracle you have been praying for is manifesting right now as you receive these words." },
+        { id: 20, keyword: "ELEVATION", text: "I am preparing a table of blessing before you in the presence of your enemies." },
+        { id: 21, keyword: "DESTINATION", text: "Your final chapter will be more glorious than your first; your destination is beautiful." },
+        { id: 22, keyword: "EMBRACE", text: "Feel my presence surrounding you right now like the warmest embrace you've ever known." },
+        { id: 23, keyword: "PEACE", text: "Unexplainable peace is settling over your anxious thoughts and weary bones." },
+        { id: 24, keyword: "CHARACTER", text: "The trial was developing the character you need to handle the authority you will receive." },
+        { id: 25, keyword: "LIMITATION", text: "I am breaking down walls of limitation and clearing the path to your promised land." },
+        { id: 26, keyword: "STEWARDSHIP", text: "I am removing the pride and doubt that would have caused you to mishandle the gifts." },
+        { id: 27, keyword: "PATIENCE", text: "I am teaching you patience and dependence on my voice rather than your own understanding." },
+        { id: 28, keyword: "DIVINE", text: "Years spent feeling forgotten are revealed as years of divine preparation." },
+        { id: 29, keyword: "APPOINTMENT", text: "I am arranging circumstances that are actually divine appointments by my loving hand." },
+        { id: 30, keyword: "STRENGTH", text: "Every battle in secret developed the spiritual muscles needed for public victory." },
+        { id: 31, keyword: "SHIELD", text: "My love for you is stronger than any hatred, and my plans more powerful than any schemes." },
+        { id: 32, keyword: "FAITHFULNESS", text: "Your faithfulness in little things has qualified you for the abundance coming now." },
+        { id: 33, keyword: "SOURCE", text: "When blessings flow, do not forget who is the source of all good things." },
+        { id: 34, keyword: "SUPERNATURAL", text: "Taking a step of faith activates my supernatural provision in your life." },
+        { id: 35, keyword: "ANCHOR", text: "When floods of adversity threatened to overwhelm you, I have been your anchor." },
+        { id: 36, keyword: "HEALING", text: "The painful procedure is ending; the healing process is beginning. You will be stronger." },
+        { id: 37, keyword: "LIGHTHOUSE", text: "Your life is becoming a lighthouse for the lost and a sanctuary for the storm-tossed." },
+        { id: 38, keyword: "HARVEST", text: "The drought is over; seeds planted in tears are bursting into an abundant harvest." },
+        { id: 39, keyword: "BEYOND", text: "I am able to do exceedingly abundantly above all you could ever ask or think." },
+        { id: 40, keyword: "GLORY", text: "This is your moment, your season, and your time to shine for my glory." },
+        { id: 41, keyword: "POSITION", text: "You are the apple of my eye, the joy of my heart, and the treasure of my affection." }
+    ];
+
+    async function generatePrayer(type) {
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('prayerBox').style.display = 'none';
+
+        const worship = worshipParts[Math.floor(Math.random() * worshipParts.length)];
+        const petition = petitionParts[Math.floor(Math.random() * petitionParts.length)];
+        const wisdom = wisdomLibrary[Math.floor(Math.random() * wisdomLibrary.length)];
+
+        const refs = ["Psalm+23", "Psalm+91", "Proverbs+3:5-6", "John+14:27", "Isaiah+40:31", "Romans+8:28", "Philippians+4:13", "Psalm+34:1", "1Thessalonians+5:16-18", "Lamentations+3:22-23"];
+        const randomRef = refs[Math.floor(Math.random() * refs.length)];
+
+        try {
+            const response = await fetch(`https://bible-api.com/${randomRef}`);
+            const data = await response.json();
+            document.getElementById('pScripture').innerText = `“${data.text.trim()}” — ${data.reference}`;
+        } catch (e) {
+            document.getElementById('pScripture').innerText = "“Trust in Yahweh with all your heart.” — Proverbs 3:5";
+        }
+
+        document.getElementById('pHeader').innerText = (type === 'Brothers & Sisters') ? "Beloved Brothers and Sisters 😇 — Sunday" : "Beloved Family and Friends 😇 — Sunday Edition";
+        document.getElementById('pWorship').innerText = worship;
+        document.getElementById('pPetition').innerText = petition;
+        document.getElementById('pEncouragement').innerText = "Bobby's Word: [" + wisdom.keyword + "] " + wisdom.text;
+
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('prayerBox').style.display = 'block';
+    }
+
+    function copyPrayer() {
+        const text = document.getElementById('prayerBox').innerText.replace("Copy to Clipboard", "").trim();
+        navigator.clipboard.writeText(text);
+        alert("Sunday Prayer copied!");
+    }
+</script>
+
+<footer><p>&copy; 2026 Padua.net | Established for His Glory.</p></footer>
+</body>
+</html>

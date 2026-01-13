@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SYSTEM PREPARATION | Wisdom Engine</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        .wrapper { max-width: 1000px; margin: auto; padding: 40px 20px; text-align: center; }
+        .protocol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        @media (max-width: 768px) { .protocol-grid { grid-template-columns: 1fr; } }
+        
+        .sacred-box {
+            background: #fff; min-height: 280px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 35px; border-radius: 25px;
+            border: 2px solid #c5a059; box-shadow: 0 15px 40px rgba(197, 160, 89, 0.12);
+            position: relative; transition: all 0.4s ease;
+        }
+        .box-label { font-family: 'Cinzel', serif; color: #c5a059; position: absolute; top: 20px; font-size: 0.75rem; }
+        .keyword-text { color: #8e703a; font-weight: bold; margin-bottom: 10px; font-family: 'Cinzel', serif; }
+        .display-text { font-size: 1.2rem; font-style: italic; color: #333; line-height: 1.6; }
+        .fade-change { opacity: 0; transform: translateY(5px); }
+    </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<script src="nav.js"></script>
+
+<div class="wrapper">
+    <header style="margin-bottom: 40px;">
+        <h1 style="font-size: 1.8rem; font-family: 'Cinzel', serif; line-height: 1.4;">
+            "You are My child, and I will provide what you ask. <br>
+            Through your faith, you shall receive and be blessed."
+        </h1>
+        <p style="color: #8e703a; letter-spacing: 1px; font-weight: 600; margin-top: 15px;">Part 1: Psalms | Part 2: Proverbs</p>
+    </header>
+
+    <div class="protocol-grid">
+        <div class="sacred-box">
+            <div class="box-label">PART 1: THE PSALM</div>
+            <div id="psalmContent">
+                <div class="keyword-text" id="pKeyword">SYNCING...</div>
+                <div class="display-text" id="pText">Accessing Cloud Data...</div>
+            </div>
+        </div>
+
+        <div class="sacred-box">
+            <div class="box-label">PART 2: THE PROVERB</div>
+            <div id="wisdomContent">
+                <div class="keyword-text" id="wKeyword">SYNCING...</div>
+                <div class="display-text" id="wText">Accessing Cloud Data...</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="cta-button" onclick="decryptFromCSV()">DECRYPT DIVINE ALIGNMENT</button>
+
+    <footer style="margin-top: 60px; font-size: 0.8rem; color: #bbb;">
+        🔒 SECURED BY 2FA CLOUD ENCRYPTION | CSV-PROTOCOL V3.0
+    </footer>
+</div>
+
+<script>
+    let wisdomData = [];
+
+    // Initialize CSV Loading
+    function initData() {
+        Papa.parse("wisdom.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                wisdomData = results.data;
+                decryptFromCSV(); // First auto-run
+            }
+        });
+    }
+
+    function decryptFromCSV() {
+        if (wisdomData.length === 0) return;
+
+        const pCont = document.getElementById('psalmContent');
+        const wCont = document.getElementById('wisdomContent');
+        pCont.classList.add('fade-change');
+        wCont.classList.add('fade-change');
+
+        setTimeout(() => {
+            // Filter for types in your CSV (ensure your CSV has a 'type' column)
+            const psalms = wisdomData.filter(item => item.type === 'psalm');
+            const proverbs = wisdomData.filter(item => item.type === 'proverb');
+
+            const pItem = psalms[Math.floor(Math.random() * psalms.length)];
+            const wItem = proverbs[Math.floor(Math.random() * proverbs.length)];
+
+            document.getElementById('pKeyword').innerText = pItem.keyword;
+            document.getElementById('pText').innerText = `"${pItem.text}"`;
+            document.getElementById('wKeyword').innerText = wItem.keyword;
+            document.getElementById('wText').innerText = `"${wItem.text}"`;
+
+            pCont.classList.remove('fade-change');
+            wCont.classList.remove('fade-change');
+        }, 400);
+    }
+
+    window.onload = initData;
+</script>
+</body>
+</html>

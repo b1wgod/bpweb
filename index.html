@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PADUA | The Blessing Season</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<script src="nav.js"></script>
+
+<div id="proverbPopup" class="blessing-overlay">
+    <div class="blessing-content" style="position: relative;">
+        <button class="close-btn" onclick="closePopup()">×</button>
+        <div class="box-label">A MOMENT OF WISDOM</div>
+        <h2 id="popupKeyword">LOADING...</h2>
+        <p id="popupText">Decrypting your millennial proverb...</p>
+        <div style="margin-top: 20px; font-size: 0.7rem; color: #ccc; letter-spacing: 1px;">
+            SELF-DESTRUCTING IN 5 SECONDS
+        </div>
+    </div>
+</div>
+
+<header>
+    <h1>MY BELOVED CHILD, STOP EVERYTHING AND HEAR THE WORD.</h1>
+    <p class="hero-text">"The frequency of Heaven is aligning for your breakthrough."</p>
+</header>
+
+<div class="dual-protocol-grid">
+    <div class="divine-box">
+        <div class="box-label">WORD FOR YOUR DESTINY</div>
+        <div id="scriptureContent">
+            <div id="sKeyword" class="keyword-glow">SYNCING...</div>
+            <div id="sText" class="message-text">Accessing the Heavenly scrolls...</div>
+        </div>
+    </div>
+
+    <div class="divine-box">
+        <div class="box-label">YOUR GODLY MISSION MY BELOVED</div>
+        <div id="actionContent">
+            <div id="aKeyword" class="keyword-glow">WAITING...</div>
+            <div id="aText" class="message-text">We are all here with you...</div>
+        </div>
+    </div>
+</div>
+
+<div style="text-align:center; padding-bottom: 80px;">
+    <button class="cta-button" onclick="refreshDivineProtocol()">DECRYPT TODAY'S ALIGNMENT</button>
+</div>
+
+<script>
+    let scriptures = [];
+    let actions = [];
+
+    function closePopup() {
+        const popup = document.getElementById('proverbPopup');
+        if(popup) {
+            popup.style.opacity = "0";
+            setTimeout(() => { popup.style.display = "none"; }, 1000);
+        }
+    }
+
+    function initIndex() {
+        // 1. Load Scriptures
+        Papa.parse("scriptures.csv", {
+            download: true, header: true,
+            complete: function(s) { 
+                scriptures = s.data.filter(row => row.keyword); // Clean empty rows
+                
+                // 2. Load Missions
+                Papa.parse("dailyactions.csv", {
+                    download: true, header: true,
+                    complete: function(a) { 
+                        actions = a.data.filter(row => row.keyword);
+                        refreshDivineProtocol(); 
+                    }
+                });
+            }
+        });
+
+        // 3. Load & Run Pop-up (5 second timer)
+        Papa.parse("millennial_proverbs.csv", {
+            download: true, header: true,
+            complete: function(m) {
+                const pData = m.data.filter(row => row.keyword);
+                if(pData.length > 0) {
+                    const item = pData[Math.floor(Math.random() * pData.length)];
+                    document.getElementById('popupKeyword').innerText = item.keyword;
+                    document.getElementById('popupText').innerText = `"${item.text}"`;
+                    
+                    document.getElementById('proverbPopup').style.display = "flex";
+                    setTimeout(closePopup, 5000); 
+                }
+            }
+        });
+    }
+
+    function refreshDivineProtocol() {
+        if (!scriptures.length || !actions.length) {
+            console.error("Data missing in CSV files");
+            return;
+        }
+        
+        const sCont = document.getElementById('scriptureContent');
+        const aCont = document.getElementById('actionContent');
+        sCont.classList.add('fade-out');
+        aCont.classList.add('fade-out');
+
+        setTimeout(() => {
+            const s = scriptures[Math.floor(Math.random() * scriptures.length)];
+            const a = actions[Math.floor(Math.random() * actions.length)];
+            
+            document.getElementById('sKeyword').innerText = s.keyword;
+            document.getElementById('sText').innerText = `"${s.text}"`;
+            document.getElementById('aKeyword').innerText = a.keyword;
+            document.getElementById('aText').innerText = a.mission;
+
+            sCont.classList.remove('fade-out');
+            aCont.classList.remove('fade-out');
+        }, 400);
+    }
+
+    window.onload = initIndex;
+</script>
+
+<footer>
+    &copy; 2026 Padua Group LLC | Secured by 2FA Cloud Encryption
+</footer>
+</body>
+</html>

@@ -2,132 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PADUA | The Blessing Season</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self' https: fonts.gstatic.com;">
+    
+    <title>BP Foundation | Professional Portfolio</title>
+    
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        h1 { color: #0056b3; }
+        .section { margin-bottom: 40px; }
+        .job-title { font-weight: bold; color: #222; }
+        .date { color: #666; font-size: 0.9em; }
+        footer { margin-top: 50px; font-size: 0.8em; color: #888; text-align: center; }
+    </style>
 </head>
 <body>
 
-<div id="nav-placeholder"></div>
-<script src="nav.js"></script>
+    <header>
+        <h1>BP Foundation</h1>
+        <p>Strategic Leadership & Professional Experience</p>
+        <p><strong>Updated: December 30, 2025</strong></p>
+    </header>
 
-<div id="proverbPopup" class="blessing-overlay">
-    <div class="blessing-content" style="position: relative;">
-        <button class="close-btn" onclick="closePopup()">×</button>
-        <div class="box-label">A MOMENT OF WISDOM</div>
-        <h2 id="popupKeyword">LOADING...</h2>
-        <p id="popupText">Decrypting your millennial proverb...</p>
-        <div style="margin-top: 20px; font-size: 0.7rem; color: #ccc; letter-spacing: 1px;">
-            SELF-DESTRUCTING IN 5 SECONDS
-        </div>
-    </div>
-</div>
-
-<header>
-    <h1>MY BELOVED CHILD, STOP EVERYTHING AND HEAR THE WORD.</h1>
-    <p class="hero-text">"The frequency of Heaven is aligning for your breakthrough."</p>
-</header>
-
-<div class="dual-protocol-grid">
-    <div class="divine-box">
-        <div class="box-label">WORD FOR YOUR DESTINY</div>
-        <div id="scriptureContent">
-            <div id="sKeyword" class="keyword-glow">SYNCING...</div>
-            <div id="sText" class="message-text">Accessing the Heavenly scrolls...</div>
-        </div>
+    <div class="section">
+        <h2>Professional Summary</h2>
+        <p>Accomplished professional with extensive experience as documented in LinkedIn and resume records. This site serves as the comprehensive digital repository for my career history and foundation goals.</p>
     </div>
 
-    <div class="divine-box">
-        <div class="box-label">YOUR GODLY MISSION MY BELOVED</div>
-        <div id="actionContent">
-            <div id="aKeyword" class="keyword-glow">WAITING...</div>
-            <div id="aText" class="message-text">We are all here with you...</div>
+    <div class="section">
+        <h2>Detailed Experience</h2>
+        <div class="experience-item">
+            <p class="job-title">Senior Leadership Role - BP Foundation</p>
+            <p class="date">Current (as of Jan 2026)</p>
+            <ul>
+                <li>Strategic oversight and foundation development.</li>
+                <li>Comprehensive project management and stakeholder engagement.</li>
+                <li>Digital transformation and web publication management via GitHub.</li>
+            </ul>
         </div>
+        </div>
+
+    <div class="section">
+        <h2>Skills & Expertise</h2>
+        <p>Cloud Memory Management, Web Publication, Strategic Planning, and Data Integrity.</p>
     </div>
-</div>
 
-<div style="text-align:center; padding-bottom: 80px;">
-    <button class="cta-button" onclick="refreshDivineProtocol()">DECRYPT TODAY'S ALIGNMENT</button>
-</div>
+    <footer>
+        <p>&copy; 2026 BP Foundation. All rights reserved.</p>
+    </footer>
 
-<script>
-    let scriptures = [];
-    let actions = [];
-
-    function closePopup() {
-        const popup = document.getElementById('proverbPopup');
-        if(popup) {
-            popup.style.opacity = "0";
-            setTimeout(() => { popup.style.display = "none"; }, 1000);
-        }
-    }
-
-    function initIndex() {
-        // 1. Load Scriptures
-        Papa.parse("scriptures.csv", {
-            download: true, header: true,
-            complete: function(s) { 
-                scriptures = s.data.filter(row => row.keyword); // Clean empty rows
-                
-                // 2. Load Missions
-                Papa.parse("dailyactions.csv", {
-                    download: true, header: true,
-                    complete: function(a) { 
-                        actions = a.data.filter(row => row.keyword);
-                        refreshDivineProtocol(); 
-                    }
-                });
-            }
-        });
-
-        // 3. Load & Run Pop-up (5 second timer)
-        Papa.parse("millennial_proverbs.csv", {
-            download: true, header: true,
-            complete: function(m) {
-                const pData = m.data.filter(row => row.keyword);
-                if(pData.length > 0) {
-                    const item = pData[Math.floor(Math.random() * pData.length)];
-                    document.getElementById('popupKeyword').innerText = item.keyword;
-                    document.getElementById('popupText').innerText = `"${item.text}"`;
-                    
-                    document.getElementById('proverbPopup').style.display = "flex";
-                    setTimeout(closePopup, 5000); 
-                }
-            }
-        });
-    }
-
-    function refreshDivineProtocol() {
-        if (!scriptures.length || !actions.length) {
-            console.error("Data missing in CSV files");
-            return;
-        }
-        
-        const sCont = document.getElementById('scriptureContent');
-        const aCont = document.getElementById('actionContent');
-        sCont.classList.add('fade-out');
-        aCont.classList.add('fade-out');
-
-        setTimeout(() => {
-            const s = scriptures[Math.floor(Math.random() * scriptures.length)];
-            const a = actions[Math.floor(Math.random() * actions.length)];
-            
-            document.getElementById('sKeyword').innerText = s.keyword;
-            document.getElementById('sText').innerText = `"${s.text}"`;
-            document.getElementById('aKeyword').innerText = a.keyword;
-            document.getElementById('aText').innerText = a.mission;
-
-            sCont.classList.remove('fade-out');
-            aCont.classList.remove('fade-out');
-        }, 400);
-    }
-
-    window.onload = initIndex;
-</script>
-
-<footer>
-    &copy; 2026 Padua Group LLC | Secured by 2FA Cloud Encryption
-</footer>
 </body>
 </html>
